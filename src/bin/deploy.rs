@@ -87,12 +87,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
     println!("DEMO token deployed at: {token_address}");
 
     let token = MockERC20::new(token_address, &rp);
-    let token_mint = token.mint(send_account, Uint::from(150));
+    let token_mint = token.mint(send_account, Uint::from(1000));
     eth_client
         .sign_and_send(token_mint.into_transaction_request())
         .await?;
 
-    println!("Minted 150DEMO to {send_account}");
+    println!("Minted DEMO to {send_account}");
 
     let forwarding_config = ForwardingConfig {
         tokenAddress: token_address,
