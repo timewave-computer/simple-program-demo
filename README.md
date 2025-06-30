@@ -1,4 +1,7 @@
-# Steps
+# Overview
+This is a demo of a simple valence program that forwards 100 tokens from one account to another.
+
+# Usage
 
 ## Setup Environment
 Install the following tools:
@@ -15,8 +18,17 @@ anvil -f https://eth-mainnet.public.blastapi.io
 ```bash
 cargo run --bin deploy
 ```
-Set the `AUTHORIZATION` and `FORWARDER` constants in [./src/lib.rs](./src/lib.rs) to the respective contract addresses based on the logs of the deploy script.
-Also set the variable `FORWARDER_LIBRARY_CONTRACT` in [./coprocessor-app/crates/circuit/lib.rs](./coprocessor-app/crates/circuit/lib.rs) with the Forwarder contract address.
+Set the variable `FORWARDER_LIBRARY_CONTRACT` in [./coprocessor-app/crates/circuit/lib.rs](./coprocessor-app/crates/circuit/lib.rs) with the Forwarder contract address printed in the logs.
+The script also sets the `$FORWARDER` environment variable with the contract address.
+
+Record the DEMO Token address and the Send and Deposit account addresses printed at the top of the log.
+Also record the DEO
+
+## Query send account balance
+```bash
+cast call <DEMO Token address> 'balanceOf(address)(uint256)' <Send Account Address> --rpc-url http://localhost:8545
+```
+There should be a balance of 150.
 
 ## Deploy the Coprocessor App
 ```bash
@@ -34,3 +46,9 @@ in the `COPROCESSOR_APP_ID` constant in [./src/lib.rs](./src/lib.rs).
 ```bash
 cargo run --bin activate
 ```
+Then query the Send and Deposit account balances
+```bash
+cast call <DEMO Token address> 'balanceOf(address)(uint256)' <Send Account Address> --rpc-url http://localhost:8545
+cast call <DEMO Token address> 'balanceOf(address)(uint256)' <Deposit Account Address> --rpc-url http://localhost:8545
+```
+TThe Send account show now have a balance of 50 and the Deposit account should have a balance of 100.
