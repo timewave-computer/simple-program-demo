@@ -12,6 +12,7 @@ serde                                = { version = "1.0.207", default-features =
 dotenv                               = "0.15"
 tokio                                = { version = "1.45.1", features = ["macros", "rt-multi-thread"] }
 alloy                                = { version = "0.9.2", features = ["full"] }
+alloy-sol-types                      = "1.2.1"
 hex                                  = "0.4.3"
 serde_json                           = { version = "1.0.140", default-features = false, features = ["alloc"] }
 mmvault                              = { git = "https://github.com/neutron-org/slinky-vault", package = "mmvault" }

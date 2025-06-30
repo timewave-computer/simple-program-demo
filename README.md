@@ -52,3 +52,12 @@ cast call <DEMO Token address> 'balanceOf(address)(uint256)' <Send Account Addre
 cast call <DEMO Token address> 'balanceOf(address)(uint256)' <Deposit Account Address> --rpc-url http://localhost:8545
 ```
 TThe Send account show now have a balance of 50 and the Deposit account should have a balance of 100.
+
+## Without ZK
+It is also possible to use this demo without ZK proofs or the coprocessor.
+Deploy the contracts as explained above and update [./src/lib.rs](./src/lib.rs).
+Then to activate run the following:
+```bash
+cargo run --bin nonzk-activate
+```
+
