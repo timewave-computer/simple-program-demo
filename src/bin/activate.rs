@@ -1,5 +1,4 @@
 use std::error::Error;
-use log::info;
 use serde_json::json;
 use alloy::{
     hex::FromHex,
@@ -14,7 +13,7 @@ use valence_domain_clients::{
 };
 use informal_program_demo::types::sol_types::Authorization;
 use informal_program_demo::{
-    AUTHORIZATION, FORWARDER, COPROCESSOR_APP_ID
+    AUTHORIZATION, COPROCESSOR_APP_ID
 };
 
 
@@ -27,6 +26,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let rpc_url = "http://127.0.0.1:8545";
 
     let eth_client = EthereumClient::new(rpc_url, &mnemonic, None)?;
+    let my_address = eth_client.signer().address();
     let rp = eth_client.get_request_provider().await?;
 
     let authorization = Authorization::new(AUTHORIZATION, &rp);
@@ -40,7 +40,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let sp1_program_vk: SP1VerifyingKey = bincode::deserialize(&program_vk)?;
     let program_vk = FixedBytes::<32>::from_hex(sp1_program_vk.bytes32()).unwrap();
     let registries = vec![0];
-    let authorized_addresses = vec![FORWARDER];
+    let authorized_addresses = vec![my_address];
     let vks = vec![program_vk];
 
     // Remember we send arrays because we allow  multiple registries added at once
@@ -57,14 +57,14 @@ async fn main() -> Result<(), Box<dyn Error>> {
             .prove(COPROCESSOR_APP_ID, &coprocessor_input)
             .await?;
 
-    info!("co_processor zkp post response: {:?}", zkp);
+    println!("co_processor zkp post response: {:?}", zkp);
 
     // extract the program and domain parameters by decoding the zkp
     let (proof_program, inputs_program) = zkp.program.decode()?;
     let (proof_domain, inputs_domain) = zkp.domain.decode()?;
 
-    // build the eureka transfer zk message from decoded params
-    let auth_eureka_transfer_zk_msg = authorization.executeZKMessage(
+    // build the forwarder zk message from decoded params
+    let auth_fowarder_zk_msg = authorization.executeZKMessage(
         Bytes::from(inputs_program),
         Bytes::from(proof_program),
         Bytes::from(inputs_domain),
@@ -72,9 +72,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
     );
 
     // sign and execute the tx & await its tx receipt before proceeding
-    info!("posting zkp ethereum authorizations");
+    println!("posting zkp ethereum authorizations");
     let zk_auth_exec_response = eth_client
-        .sign_and_send(auth_eureka_transfer_zk_msg.into_transaction_request())
+        .sign_and_send(auth_fowarder_zk_msg.into_transaction_request())
         .await?;
 
     rp.get_transaction_receipt(zk_auth_exec_response.transaction_hash).await?;
