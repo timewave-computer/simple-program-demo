@@ -79,14 +79,23 @@ async fn main() -> Result<(), Box<dyn Error>> {
     println!("Processor deployed at: {processor_address}");
 
     let token_tx = MockERC20::deploy_builder(&rp, "Demo Token".to_string(), "DEMO".to_string(), 18);
-    let token = eth_client
+    let token_address = eth_client
         .sign_and_send(token_tx.into_transaction_request())
         .await?
         .contract_address
         .unwrap();
+    println!("DEMO token deployed at: {token_address}");
+
+    let token = MockERC20::new(token_address, &rp);
+    let token_mint = token.mint(send_account, Uint::from(150));
+    eth_client
+        .sign_and_send(token_mint.into_transaction_request())
+        .await?;
+
+    println!("Minted 150DEMO to {send_account}");
 
     let forwarding_config = ForwardingConfig {
-        tokenAddress: token,
+        tokenAddress: token_address,
         maxAmount: Uint::from(100),
     };
 

@@ -8,7 +8,7 @@ use alloy_sol_types::{sol, SolCall, SolValue};
 use valence_coprocessor::Witness;
 
 // The library this will be executed on:
-const FORWARDER_LIBRARY_CONTRACT: &str = "0xcF8f8313C587c6Ec6E49Be286942D451D4E0908A";
+const FORWARDER_LIBRARY_CONTRACT: &str = "0x7811A1648e43F1bC207d7DF21B039AE9D2870b91";
 
 /// Main circuit function for token transfer validation
 pub fn circuit(witnesses: Vec<Witness>) -> Vec<u8> {
