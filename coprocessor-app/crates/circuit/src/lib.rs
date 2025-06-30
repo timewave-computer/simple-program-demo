@@ -211,7 +211,7 @@ mod tests {
         let result = circuit(witnesses);
 
         // Try to decode the ZkMessage to verify it's valid
-        let decoded_result = ZkMessage::abi_decode(&result, false);
+        let decoded_result = ZkMessage::abi_decode(&result);
         assert!(decoded_result.is_ok(), "Should be able to decode ZkMessage");
     }
 

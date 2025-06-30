@@ -3,7 +3,7 @@
 ## Setup Environment
 Install the following tools:
  - Foundry: [https://getfoundry.sh](https://getfoundry.sh)
- - cargo-valence v0.3.0 (replace the tag in the install instructions): [https://github.com/timewave-computer/valence-coprocessor/tree/main](https://github.com/timewave-computer/valence-coprocessor/tree/main)
+ - cargo-valence v0.3.1 (replace the tag in the install instructions if needed): [https://github.com/timewave-computer/valence-coprocessor/tree/main](https://github.com/timewave-computer/valence-coprocessor/tree/main)
  - cargo
 
 ## Startup Anvil from mainnet
@@ -25,6 +25,7 @@ cargo-valence --socket prover.timewave.computer:37281 \
   deploy circuit \
   --controller ./crates/controller \
   --circuit valence-coprocessor-app-circuit
+cd ..
 ```
 Record the ID inside the `controller` attribute of the JSON output
 in the `COPROCESSOR_APP_ID` constant in [./src/lib.rs](./src/lib.rs).
