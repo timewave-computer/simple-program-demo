@@ -1,24 +1,21 @@
-use std::{error::Error};
+use std::error::Error;
 
 use alloy::{
     hex::FromHex,
     primitives::{Address, Bytes, FixedBytes, Uint},
+    sol,
     sol_types::SolValue,
-    sol
 };
+use informal_program_demo::types::sol_types::{
+    processor_contract::LiteProcessor, Authorization, BaseAccount, ERC1967Proxy, Forwarder,
+    MockERC20, SP1VerificationGateway,
+};
+use informal_program_demo::SP1_VERIFIER;
+use sp1_sdk::{HashableKey, SP1VerifyingKey};
 use valence_domain_clients::{
     clients::{coprocessor::CoprocessorClient, ethereum::EthereumClient},
     coprocessor::base_client::CoprocessorBaseClient,
     evm::{base_client::EvmBaseClient, request_provider_client::RequestProviderClient},
-};
-use sp1_sdk::{HashableKey, SP1VerifyingKey};
-use informal_program_demo::{SP1_VERIFIER};
-use informal_program_demo::types::sol_types::{
-    Authorization, BaseAccount,
-    SP1VerificationGateway,
-    processor_contract::LiteProcessor,
-    MockERC20, ERC1967Proxy,
-    Forwarder
 };
 
 sol! {
@@ -41,12 +38,8 @@ sol! {
     }
 }
 
-
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-
-    env_logger::init();
-
     let mnemonic = "test test test test test test test test test test test junk";
     let rpc_url = "http://127.0.0.1:8545";
 
@@ -56,7 +49,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let send_account_tx =
         BaseAccount::deploy_builder(&rp, my_address, vec![]).into_transaction_request();
-
 
     let send_account = eth_client
         .sign_and_send(send_account_tx)
@@ -74,7 +66,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .contract_address
         .unwrap();
     println!("Deposit account deployed at: {}", deposit_account);
-    
+
     let processor =
         LiteProcessor::deploy_builder(&rp, FixedBytes::<32>::default(), Address::ZERO, 0, vec![])
             .into_transaction_request();
@@ -86,12 +78,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .unwrap();
     println!("Processor deployed at: {processor_address}");
 
-    let token_tx = MockERC20::deploy_builder(
-        &rp,
-        "Demo Token".to_string(),
-        "DEMO".to_string(),
-        18
-    );
+    let token_tx = MockERC20::deploy_builder(&rp, "Demo Token".to_string(), "DEMO".to_string(), 18);
     let token = eth_client
         .sign_and_send(token_tx.into_transaction_request())
         .await?
@@ -108,14 +95,14 @@ async fn main() -> Result<(), Box<dyn Error>> {
         outputAccount: deposit_account,
         forwardingConfigs: vec![forwarding_config],
         intervalType: IntervalType::BLOCKS,
-        minInterval: 1
+        minInterval: 1,
     };
 
     let forwarder = Forwarder::deploy_builder(
         &rp,
         my_address,
         processor_address,
-        forwarder_config.abi_encode().into()
+        forwarder_config.abi_encode().into(),
     );
 
     let forwarder = eth_client
@@ -124,7 +111,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .contract_address
         .unwrap();
     println!("Forwarder library deployed at {}", forwarder);
-        
 
     let send_account = BaseAccount::new(send_account, &rp);
     let approve_library_tx = send_account
@@ -160,11 +146,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let verification_gateway = SP1VerificationGateway::new(verification_gateway_address, &rp);
     let initialize_verification_gateway_tx = verification_gateway
-        .initialize(
-            "0x0000000000000000000000000000000000000000000000000000000000000000".parse().unwrap(),
-            SP1_VERIFIER.parse().unwrap(),
-            domain_vk
-        )
+        .initialize(SP1_VERIFIER.parse().unwrap(), domain_vk)
         .into_transaction_request();
     eth_client
         .sign_and_send(initialize_verification_gateway_tx)
@@ -218,5 +200,4 @@ async fn main() -> Result<(), Box<dyn Error>> {
     assert_eq!(new_owner, my_address);
 
     Ok(())
-
 }

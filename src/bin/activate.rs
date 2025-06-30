@@ -1,27 +1,21 @@
-use std::error::Error;
-use serde_json::json;
 use alloy::{
     hex::FromHex,
     primitives::{Bytes, FixedBytes},
     providers::Provider,
 };
+use informal_program_demo::types::sol_types::Authorization;
+use informal_program_demo::{AUTHORIZATION, COPROCESSOR_APP_ID};
+use serde_json::json;
 use sp1_sdk::{HashableKey, SP1VerifyingKey};
+use std::error::Error;
 use valence_domain_clients::{
     clients::{coprocessor::CoprocessorClient, ethereum::EthereumClient},
     coprocessor::base_client::CoprocessorBaseClient,
     evm::{base_client::EvmBaseClient, request_provider_client::RequestProviderClient},
 };
-use informal_program_demo::types::sol_types::Authorization;
-use informal_program_demo::{
-    AUTHORIZATION, COPROCESSOR_APP_ID
-};
-
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-
-    env_logger::init();
-
     let mnemonic = "test test test test test test test test test test test junk";
     let rpc_url = "http://127.0.0.1:8545";
 
@@ -33,9 +27,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     // Get the VK for the coprocessor app
     let coprocessor_client = CoprocessorClient::default();
-    let program_vk = coprocessor_client
-        .get_vk(COPROCESSOR_APP_ID)
-        .await?;
+    let program_vk = coprocessor_client.get_vk(COPROCESSOR_APP_ID).await?;
 
     let sp1_program_vk: SP1VerifyingKey = bincode::deserialize(&program_vk)?;
     let program_vk = FixedBytes::<32>::from_hex(sp1_program_vk.bytes32()).unwrap();
@@ -54,8 +46,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let coprocessor_input = json!({});
     let zkp = coprocessor_client
-            .prove(COPROCESSOR_APP_ID, &coprocessor_input)
-            .await?;
+        .prove(COPROCESSOR_APP_ID, &coprocessor_input)
+        .await?;
 
     println!("co_processor zkp post response: {:?}", zkp);
 
@@ -77,7 +69,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .sign_and_send(auth_fowarder_zk_msg.into_transaction_request())
         .await?;
 
-    rp.get_transaction_receipt(zk_auth_exec_response.transaction_hash).await?;
+    rp.get_transaction_receipt(zk_auth_exec_response.transaction_hash)
+        .await?;
 
     Ok(())
 }
