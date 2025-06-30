@@ -3,8 +3,8 @@ use alloy::{
     primitives::{Bytes, FixedBytes},
     providers::Provider,
 };
-use informal_program_demo::types::sol_types::Authorization;
-use informal_program_demo::{AUTHORIZATION, COPROCESSOR_APP_ID};
+use simple_program_demo::types::sol_types::Authorization;
+use simple_program_demo::{AUTHORIZATION, COPROCESSOR_APP_ID};
 use serde_json::json;
 use sp1_sdk::{HashableKey, SP1VerifyingKey};
 use std::error::Error;

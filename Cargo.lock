@@ -4061,29 +4061,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "informal_program_demo"
-version = "0.0.1"
-dependencies = [
- "alloy",
- "anyhow",
- "async-trait",
- "bincode",
- "cosmrs",
- "cosmwasm-std",
- "dotenv",
- "env_logger",
- "hex",
- "log",
- "mmvault",
- "serde",
- "serde_json",
- "sp1-sdk",
- "tokio",
- "toml",
- "valence-domain-clients",
-]
-
-[[package]]
 name = "informalsystems-pbjson"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6650,6 +6627,29 @@ checksum = "77549399552de45a898a580c1b41d445bf730df867cc44e6c0233bbc4b8329de"
 dependencies = [
  "digest 0.10.7",
  "rand_core 0.6.4",
+]
+
+[[package]]
+name = "simple_program_demo"
+version = "0.0.1"
+dependencies = [
+ "alloy",
+ "anyhow",
+ "async-trait",
+ "bincode",
+ "cosmrs",
+ "cosmwasm-std",
+ "dotenv",
+ "env_logger",
+ "hex",
+ "log",
+ "mmvault",
+ "serde",
+ "serde_json",
+ "sp1-sdk",
+ "tokio",
+ "toml",
+ "valence-domain-clients",
 ]
 
 [[package]]

@@ -6,11 +6,11 @@ use alloy::{
     sol,
     sol_types::SolValue,
 };
-use informal_program_demo::types::sol_types::{
+use simple_program_demo::types::sol_types::{
     processor_contract::LiteProcessor, Authorization, BaseAccount, ERC1967Proxy, Forwarder,
     MockERC20, SP1VerificationGateway,
 };
-use informal_program_demo::SP1_VERIFIER;
+use simple_program_demo::SP1_VERIFIER;
 use sp1_sdk::{HashableKey, SP1VerifyingKey};
 use valence_domain_clients::{
     clients::{coprocessor::CoprocessorClient, ethereum::EthereumClient},
