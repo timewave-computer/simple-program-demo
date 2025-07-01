@@ -3,6 +3,20 @@ This is a demo of a simple valence program that forwards 100 tokens from one acc
 
 Once the program has been deployed, the send account is loaded with 1000 DEMO tokens. This README describes two methods for activating the forwarder to send tokens from the Send account to the Deposit account. The first method relies on the zk-coprocessor, while the second uses a simple on-chain authorization check.
 
+# Table of Contents
+- [Key Components](#key-components)
+  - [Smart Contracts](#smart-contracts)
+  - [Rust scripts](#rust-scripts)
+  - [Coprocessor App (ZK Proof Generation)](#coprocessor-app-zk-proof-generation)
+- [Usage](#usage)
+  - [Setup Environment](#setup-environment)
+  - [Startup Anvil from mainnet](#startup-anvil-from-mainnet)
+  - [Deploy Contracts](#deploy-contracts)
+  - [Query send account balance](#query-send-account-balance)
+  - [Deploy the Coprocessor App](#deploy-the-coprocessor-app)
+  - [Initialize and Execute Contracts](#intitialize-and-execute-contracts)
+  - [Without ZK](#without-zk)
+
 # Key Components
 
 ## Smart Contracts
