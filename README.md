@@ -25,10 +25,10 @@ Valence contracts
 - **`Forwarder`**: The main contract that handles token forwarding logic
 - **`Authorization`**: Manages ZK proof verification and authorization
 - **`LiteProcessor`**: Processes messages and executes forwarding operations
+- **`SP1VerificationGateway`**: Verifies SP1 (Succinct Labs) ZK proofs
 
 Other EVM contracts
 - **`MockERC20`**: A test ERC20 token called "DEMO" for the demonstration
-- **`SP1VerificationGateway`**: Verifies SP1 (Succinct Labs) ZK proofs
 - **`ERC1967Proxy`**: Upgradeable proxy pattern for the verification gateway
 
 ## Rust scripts
