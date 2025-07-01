@@ -72,7 +72,7 @@ anvil -f https://eth-mainnet.public.blastapi.io
 cargo run --bin deploy
 ```
 Record the Authorization and Forwarder contract addresses in the relevant constants in [./src/lib.rs](./src/lib.rs).
-Set the variable `FORWARDER_LIBRARY_CONTRACT` in [./coprocessor-app/crates/circuit/lib.rs](./coprocessor-app/crates/circuit/lib.rs) with the Forwarder contract address printed in the logs.
+Set the variable `FORWARDER_LIBRARY_CONTRACT` in [./coprocessor-app/crates/circuit/src/lib.rs](./coprocessor-app/crates/circuit/src/lib.rs) with the Forwarder contract address printed in the logs.
 
 Record the DEMO Token address and the Send and Deposit account addresses printed at the top of the log.
 
